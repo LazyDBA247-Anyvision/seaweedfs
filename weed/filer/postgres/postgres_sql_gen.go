@@ -17,7 +17,7 @@ var (
 )
 
 func (gen *SqlGenPostgres) GetSqlInsert(bucket string) string {
-	return fmt.Sprintf(`INSERT INTO "%s" (dirhash,name,directory,meta) VALUES($1,$2,$3,$4)`, bucket)
+	return fmt.Sprintf(`INSERT INTO "%[1]s" (dirhash,name,directory,meta) VALUES($1,$2,$3,$4) ON CONFLICT ON CONSTRAINT "%[1]s_pkey" DO UPDATE SET meta = EXCLUDED.meta WHERE "%[1]s".meta != EXCLUDED.meta`, bucket)
 }
 
 func (gen *SqlGenPostgres) GetSqlUpdate(bucket string) string {
